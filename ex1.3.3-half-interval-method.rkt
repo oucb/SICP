@@ -1,0 +1,22 @@
+(define (search f neg-point pos-point)
+  (let ((midpoint (average neg-point pos-point)))
+    (if (close-enough? neg-point pos-point)
+        midpoint
+        (let ((test-value (f midpoint)))
+          (cond ((negative? test-value)
+                 (search f midpoint pos-point))
+                ((posative? test-value)
+                 (search f neg-point midpoint))
+                (else midpoint))))))
+(define (close-enough? v1 v2)
+  (< (abs (- v1 v2)) 0.00001))
+(define (half-interval-method f a b)
+  (let ((a-value (f a))
+        (b-value (f b)))
+    (cond ((and (negative? a) (posative? b))
+           (search f a b))
+          ((and (posative? a) (negative? b))
+           (search f b a))
+          (else 
+           (error "Values are not of opposite sign" a b)))))
+                

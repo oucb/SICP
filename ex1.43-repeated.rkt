@@ -1,0 +1,12 @@
+(define (repeated f n)
+  (define (repeat-it g m)
+    (if (= m 0)
+        g
+        (repeat-it (compose-it g f) (- m 1))))
+  (define (g x)
+    x)
+  (repeat-it g n))
+(define (compose-it s t)
+  (lambda (x) (s (t x))))
+(define (square x) 
+  (* x x))

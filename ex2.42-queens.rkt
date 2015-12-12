@@ -1,0 +1,41 @@
+(define (queens board-size)
+  (define (queen-cols k)
+    (if (= k 0)
+        (list '(()))
+        (filter
+         (lambda (positions) (safe? k positions))
+         (flatmap
+          (lambda (rest-of-queens)
+            (map (lambda (new-row)
+                   (adjoin-position new-row k rest-of-queens))
+                 (enumerate-interval 1 board-size)))
+            (queen-cols (- k 1))))))
+  (queen-cols board-size))
+(define (enumerate-interval m n)
+  (if (< n m) 
+      '()
+      (append (enumerate-interval m (- n 1)) (list n))))
+(define (adjoin-position position k rest-of-queens)
+  (list k (cons position (cdr rest-of-queens))))
+(define (flatmap proc seq)
+  (acculate append '() (map proc seq)))
+(define (acculate op initial sequence)
+  (if (null? sequence)
+      initial
+      (op (car sequence)
+          (acculate op initial (cdr sequence)))))
+(define (safe? k positions)
+  (cond ((= k 1) positions)
+        ((equal? (cadr positions) (caddr positions)) '(()))
+        ((equal? (cadr positions) (+ (caddr positions) (- k 1))) '(()))
+        (else (safe? (- k 1) (list (- k 1)  (cddr positions))))))
+(define (filter predicate sequence)
+  (cond ((null? sequence) '())
+        ((predicate (car sequence))
+         (cons (car sequence) 
+               (filter predicate (cdr sequence))))
+        (else (filter predicate (cdr sequence)))))
+
+  
+      
+            
