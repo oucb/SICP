@@ -1,4 +1,4 @@
 SICP
 ====
 
-The exercise that I do in the book 'Structure and Interpretation of Computer Programs'
+The exercises that I do in book 'Structure and Interpretation of Computer Programs'
